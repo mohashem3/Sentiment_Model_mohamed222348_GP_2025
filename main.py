@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import numpy as np
@@ -21,6 +22,15 @@ ratios = joblib.load("models/nb_ratios.joblib")
 
 # ===== Initialize FastAPI =====
 app = FastAPI()
+
+# ===== CORS Middleware =====
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or ["http://localhost:5173"] if you want to restrict it
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ===== Preprocessing Setup =====
 stop_words_set = set(stopwords.words('english'))
